@@ -1,0 +1,80 @@
+_shoothouseGroup2 = createGroup [east, true];
+flankGroup1 = createGroup [east, true];
+unitcount1 = selectRandom [12, 14, 16]; // The Amount of Unit you want to spawn in, keep the number of positions in mind while spawning in units
+alldoors = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+lockedDoors = [5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+flankercount = selectRandom [0, 1, 1, 1, 2, 2, 3]; // The Amount of Unit you want to spawn in, keep the number of positions in mind while spawning in units
+call{shootgate_3 animate ["Door_1_rot", 0];};
+
+
+{[barracks1, _x, selectRandom[0,1]] call BIS_fnc_door;
+} forEach [5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+{[barracks1, _x, 0] call BIS_fnc_door;
+} forEach [1, 2, 3, 4, 8];
+
+{ 
+  _doorString = format ["bis_disabled_Door_%1",_x];
+  barracks1 setVariable [_doorString,selectRandom[2,2,2,2,2,2,2,2,2,1],true]; 
+} forEach [5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
+
+"LOP_BH_Infantry_Rifleman" createUnit [spawnroom, _shoothouseGroup2, "sqllead2 = this"];
+unitcount1 = unitcount1 - 1;
+
+while { unitcount1 > 0 } do 
+{
+sleep 0.15;
+"LOP_BH_Infantry_Rifleman" createUnit [getPosATL spawnroom, _shoothouseGroup2];
+unitcount1 = unitcount1 - 1;
+
+};
+[_shoothouseGroup2, barracks1, 15, [], true] call lambs_wp_fnc_taskGarrison;
+
+
+
+{
+    _x disableAI "PATH";
+	_x setUnitPos "UP";
+} forEach units group sqllead2;
+waitUntil {({alive _x} count units _shoothouseGroup2) > 1;};
+sleep 1;
+[cyberSpeaker2, ["cyber", 20, 1]] remoteExec ["say3D"];
+call{shootgate_3 animate ["Door_1_rot", 1];};
+sleep 5; 
+
+while {flankercount == 1} do{
+sleep 1;
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker1 = this"];
+flankercount = flankercount - 1;
+flanker1 doMove (getPosATL barracks1FlankPos_1 );
+
+};
+
+while {flankercount == 2} do{
+sleep 0.5;
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker1 = this"];
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker2 = this"];
+flankercount = flankercount - 2;
+
+flanker1 doMove (getPosATL selectRandom[barracks1FlankPos_1, barracks1FlankPos_2] );
+flanker2 doMove (getPosATL selectRandom[barracks1FlankPos_1, barracks1FlankPos_2] );
+};
+
+
+
+while {flankercount == 3} do{
+sleep 0.5;
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker1 = this"];
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker2 = this"];
+"LOP_BH_Infantry_Rifleman" createUnit [barracks1POS_1, flankGroup1, "flanker3 = this"];
+
+flankercount = flankercount - 3;
+flanker1 doMove (getPosATL selectRandom[barracks1FlankPos_1, barracks1FlankPos_2] );
+flanker2 doMove (getPosATL selectRandom[barracks1FlankPos_1, barracks1FlankPos_2] );
+flanker3 doMove (getPosATL selectRandom[barracks1FlankPos_1, barracks1FlankPos_2] );
+
+};
+
+
+waitUntil {({alive _x} count units _shoothouseGroup2) < 1;};
+[west, "Base"] sideChat "Barracks Building Cleared. Interact With Laptop To Clean.";
+
