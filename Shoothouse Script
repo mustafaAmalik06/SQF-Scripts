@@ -1,9 +1,9 @@
 _shoothouseGroup2 = createGroup [east, true];
 flankGroup1 = createGroup [east, true];
-unitcount1 = selectRandom [12, 14, 16]; // The Amount of Unit you want to spawn in, keep the number of positions in mind while spawning in units
+unitcount1 = selectRandom [12, 14, 16]; // The Amount of garrison Units you want to spawn in, keep the number of positions in mind while spawning in units
 alldoors = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 lockedDoors = [5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
-flankercount = selectRandom [0, 1, 1, 1, 2, 2, 3]; // The Amount of Unit you want to spawn in, keep the number of positions in mind while spawning in units
+flankercount = selectRandom [0, 1, 1, 1, 2, 2, 3]; // The Amount of flanker units you want to spawn in, keep the number of positions in mind while spawning in units
 call{shootgate_3 animate ["Door_1_rot", 0];};
 
 
